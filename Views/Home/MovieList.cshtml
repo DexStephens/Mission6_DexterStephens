@@ -1,0 +1,39 @@
+﻿@using Mission6_DexterStephens.Models.Home;
+@{
+    ViewData["Title"] = "Movie List";
+}
+@model IEnumerable<Mission6_DexterStephens.Models.Home.MovieModel>;
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Category</th>
+            <th scope="col">Year</th>
+            <th scope="col">Director</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Edited</th>
+            <th scope="col">Lent To</th>
+            <th scope="col">Notes</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(MovieModel movie in Model)
+        {
+            <tr>
+                <td>@movie.Title</td>
+                <td>@movie.Category.Name</td>
+                <td>@movie.Year</td>
+                <td>@movie.Director</td>
+                <td>@movie.Rating</td>
+                <td>@movie.Edited</td>
+                <td>@movie.LentTo</td>
+                <td>@movie.Notes</td>
+                <td><a asp-action="Edit" asp-controller="Home" asp-route-Title="@movie.Title" class="btn btn-warning">Edit</a></td>
+                <td><a asp-action="Delete" asp-controller="Home" asp-route-title="@movie.Title" class="btn btn-danger">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
