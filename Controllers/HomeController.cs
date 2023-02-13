@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Mission6_DexterStephens.Models;
 using Mission6_DexterStephens.Models.Home;
@@ -32,12 +33,14 @@ namespace Mission6_DexterStephens.Controllers
         [HttpGet]
         public IActionResult NewMovie()
         {
+            ViewBag.Categories = _movieContext.Categories.ToList();
             return View();
         }
 
         [HttpPost]
         public IActionResult NewMovie(MovieModel movieModel)
         {
+            ViewBag.Categories = _movieContext.Categories.ToList();
             if (ModelState.IsValid)
             {
                 try
@@ -59,6 +62,60 @@ namespace Mission6_DexterStephens.Controllers
                 return View(movieModel);
             }
             
+        }
+
+        public IActionResult MovieList()
+        {
+            var movies = _movieContext.Movies.Include(x => x.Category).ToList();
+           return View(movies);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(string title)
+        {
+            var movie = _movieContext.Movies.Single(x => x.Title == title);
+            ViewBag.Categories = _movieContext.Categories.ToList();
+            return View("NewMovie", movie);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(MovieModel movieModel)
+        {
+            ViewBag.Categories = _movieContext.Categories.ToList();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _movieContext.Update(movieModel);
+                    _movieContext.SaveChanges();
+
+                    return RedirectToAction("MovieList");
+                }
+                catch
+                {
+                    return View("NewMovie", movieModel);
+                }
+            }
+            else
+            {
+                return View("NewMovie", movieModel);
+            }
+        }
+
+        public IActionResult Delete(string title)
+        {
+            try
+            {
+                var movie = _movieContext.Movies.Single(x => x.Title == title);
+                _movieContext.Movies.Remove(movie);
+                _movieContext.SaveChanges();
+
+                return RedirectToAction("MovieList");
+            }
+            catch
+            {
+                return RedirectToAction("MovieList");
+            }
         }
     }
 }

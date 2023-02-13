@@ -8,7 +8,7 @@ using Mission6_DexterStephens.Models;
 namespace Mission6_DexterStephens.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20230208012425_Initial")]
+    [Migration("20230209043805_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,14 +17,70 @@ namespace Mission6_DexterStephens.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.32");
 
+            modelBuilder.Entity("Mission6_DexterStephens.Models.Home.CategoryModel", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            Name = "Action/Adventure"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            Name = "Comedy"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            Name = "Drama"
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            Name = "Family"
+                        },
+                        new
+                        {
+                            CategoryId = 5,
+                            Name = "Horror/Suspense"
+                        },
+                        new
+                        {
+                            CategoryId = 6,
+                            Name = "Miscellaneous"
+                        },
+                        new
+                        {
+                            CategoryId = 7,
+                            Name = "Television"
+                        },
+                        new
+                        {
+                            CategoryId = 8,
+                            Name = "VHS"
+                        });
+                });
+
             modelBuilder.Entity("Mission6_DexterStephens.Models.Home.MovieModel", b =>
                 {
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -49,13 +105,15 @@ namespace Mission6_DexterStephens.Migrations
 
                     b.HasKey("Title");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Movies");
 
                     b.HasData(
                         new
                         {
                             Title = "Dark Knight",
-                            Category = "Action/Adventure",
+                            CategoryId = 1,
                             Director = "Christopher Nolan",
                             Edited = false,
                             Rating = "PG-13",
@@ -64,7 +122,7 @@ namespace Mission6_DexterStephens.Migrations
                         new
                         {
                             Title = "Cars",
-                            Category = "Action/Adventure",
+                            CategoryId = 1,
                             Director = "John Lasseter",
                             Edited = false,
                             Rating = "G",
@@ -73,12 +131,21 @@ namespace Mission6_DexterStephens.Migrations
                         new
                         {
                             Title = "Harry Potter and the Chamber of Secrets",
-                            Category = "Action/Adventure",
+                            CategoryId = 1,
                             Director = "Chris Columbus",
                             Edited = false,
                             Rating = "PG",
                             Year = 2002
                         });
+                });
+
+            modelBuilder.Entity("Mission6_DexterStephens.Models.Home.MovieModel", b =>
+                {
+                    b.HasOne("Mission6_DexterStephens.Models.Home.CategoryModel", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

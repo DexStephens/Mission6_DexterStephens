@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mission6_DexterStephens.Models.Home
 {
@@ -8,7 +9,8 @@ namespace Mission6_DexterStephens.Models.Home
         [Required]
         public string Title { get; set; }
         [Required]
-        public string Category {get; set;}
+        public int CategoryId {get; set;}
+        public CategoryModel Category { get; set;}
         [Required]
         public int Year { get; set; }
         [Required]

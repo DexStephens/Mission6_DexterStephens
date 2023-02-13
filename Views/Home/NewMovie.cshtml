@@ -7,8 +7,14 @@
         <label asp-for="Title">Title:</label>
         <input asp-for="Title"/>
         <br />
-        <label asp-for="Category">Category:</label>
-        <input asp-for="Category" />
+        <label asp-for="CategoryId">Category:</label>
+        <select asp-for="CategoryId" >
+            <option value="">Select a category</option>
+            @foreach(var category in ViewBag.Categories)
+            {
+                <option value="@category.CategoryId">@category.Name</option>
+            }
+        </select>
         <br />
         <label asp-for="Year">Year:</label>
         <input asp-for="Year" type="number"/>
